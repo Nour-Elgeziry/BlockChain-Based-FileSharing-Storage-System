@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import logo from "../logo.png";
 import "./App.css";
 
-const ipfsClient = require("ipfs-http-client");
+const ipfsClient = require("ipfs-api");
 const ipfs = ipfsClient({
   host: "ipfs.infura.io",
   port: 5001,
@@ -14,7 +13,7 @@ class App extends Component {
     super(props);
     this.state = {
       buffer: null,
-      ipfsHash: ""
+      ipfsHash: "QmZ6uihQtNFE1bGB8o3edaHGzQBm7NwHcJm4kvHM6rbXft"
     };
   }
   captureFile = event => {
@@ -33,11 +32,13 @@ class App extends Component {
     //1. upload file to ipfs
     ipfs.add(this.state.buffer, (error, result) => {
       console.log("Ipfs result", result);
+      const ipfsHash = result[0].hash;
+      this.setState({ ipfsHash });
       if (error) {
         console.error(error);
         return;
       }
-      //2. store file in block chain
+      //2. store fileon blockchain
     });
   };
   render() {
@@ -58,7 +59,7 @@ class App extends Component {
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
                 <a
-                  href="http://www.dappuniversity.com/bootcamp"
+                  href={`https://ipfs.infura.io/ipfs/${this.state.ipfsHash}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
