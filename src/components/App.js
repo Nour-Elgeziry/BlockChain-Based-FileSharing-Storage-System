@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import Web3 from "web3";
 import "./App.css";
+import SSSDapp from "../abis/SSSDapp.json";
 
 const ipfsClient = require("ipfs-api");
 const ipfs = ipfsClient({
@@ -9,13 +11,56 @@ const ipfs = ipfsClient({
 }); // leaving out the arguments will default to these values
 
 class App extends Component {
+  async componentWillMount() {
+    await this.loadWeb3();
+    await this.loadBlockchainData();
+  }
+
+  // Get the account
+  //get the Network
+  //geT ipfsHash
+  async loadBlockchainData() {
+    const web3 = window.web3;
+    // Load account
+    const accounts = await web3.eth.getAccounts();
+    this.setState({ account: accounts[0] });
+    const networkId = await web3.eth.net.getId();
+    const networkData = SSSDapp.networks[networkId];
+    if (networkData) {
+      // Fetching contract
+      const contract = web3.eth.Contract(SSSDapp.abi, networkData.address);
+      this.setState({ contract });
+      const ipfsHash = await contract.methods.get().call();
+      this.setState({ ipfsHash });
+    } else {
+      window.alert("Smart contract not deployed to detected network.");
+    }
+  }
+
+  // setting web3 to connect to block chain
+  async loadWeb3() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
+      account: "",
       buffer: null,
-      ipfsHash: "QmZ6uihQtNFE1bGB8o3edaHGzQBm7NwHcJm4kvHM6rbXft"
+      contract: null,
+      ipfsHash: " "
     };
   }
+
   captureFile = event => {
     event.preventDefault();
     const file = event.target.files[0];
@@ -33,12 +78,18 @@ class App extends Component {
     ipfs.add(this.state.buffer, (error, result) => {
       console.log("Ipfs result", result);
       const ipfsHash = result[0].hash;
-      this.setState({ ipfsHash });
+
       if (error) {
         console.error(error);
         return;
       }
-      //2. store fileon blockchain
+      //2. store file on blockchain
+      this.state.contract.methods
+        .set(ipfsHash)
+        .send({ from: this.state.account })
+        .then(r => {
+          this.setState({ ipfsHash });
+        });
     });
   };
   render() {
@@ -53,6 +104,11 @@ class App extends Component {
           >
             SSSDapp
           </a>
+          <ul className="navbar-nav px-3">
+            <li className="nav-item text-norap d-none d-sm-none d-sm-block">
+              <small className="text-white">{this.state.account}</small>
+            </li>
+          </ul>
         </nav>
         <div className="container-fluid mt-5">
           <div className="row">
