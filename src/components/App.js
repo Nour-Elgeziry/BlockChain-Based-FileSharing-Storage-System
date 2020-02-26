@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Web3 from "web3";
 import "./App.css";
 import SSSDapp from "../abis/SSSDapp.json";
+import DocumentTitle from "react-document-title";
 
 const ipfsClient = require("ipfs-api");
 const ipfs = ipfsClient({
@@ -12,6 +13,7 @@ const ipfs = ipfsClient({
 
 class App extends Component {
   async componentWillMount() {
+    DocumentTitle.title = "SSSDapp"
     await this.loadWeb3();
     await this.loadBlockchainData();
   }
@@ -95,6 +97,9 @@ class App extends Component {
   render() {
     return (
       <div>
+        <DocumentTitle title="SSSDapp">
+          <h1>Home, sweet home.</h1>
+        </DocumentTitle>
         <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a
             className="navbar-brand col-sm-3 col-md-2 mr-0"
@@ -124,7 +129,7 @@ class App extends Component {
                   />
                 </a>
                 <p>&nbsp;</p>
-                <h2>Change File</h2>
+                <h2>Choose File</h2>
                 <form onSubmit={this.onSubmit}>
                   <input type="file" onChange={this.captureFile} />
                   <input type="submit" />
