@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Web3 from "web3";
 import "./App.css";
 import SSSDapp from "../abis/SSSDapp.json";
-import DocumentTitle from "react-document-title";
 
 const ipfsClient = require("ipfs-api");
 const ipfs = ipfsClient({
@@ -13,27 +12,33 @@ const ipfs = ipfsClient({
 
 class App extends Component {
   async componentWillMount() {
-    DocumentTitle.title = "SSSDapp"
     await this.loadWeb3();
     await this.loadBlockchainData();
   }
 
-  // Get the account
+  // get the account
   //get the Network
-  //geT ipfsHash
+  //get ipfsHash
   async loadBlockchainData() {
     const web3 = window.web3;
     // Load account
-    const accounts = await web3.eth.getAccounts();
+    const accounts = await web3.eth.getAccounts(); // get account and return array
     this.setState({ account: accounts[0] });
-    const networkId = await web3.eth.net.getId();
+    const networkId = await web3.eth.net.getId(); // getting network id
+    console.log(networkId);
     const networkData = SSSDapp.networks[networkId];
     if (networkData) {
       // Fetching contract
       const contract = web3.eth.Contract(SSSDapp.abi, networkData.address);
+      console.log(contract);
       this.setState({ contract });
       const ipfsHash = await contract.methods.get().call();
       this.setState({ ipfsHash });
+      /* Getting aloowed files to access for the user
+      { 
+        call contract function that shows aloowed files;
+      }*/
+      
     } else {
       window.alert("Smart contract not deployed to detected network.");
     }
@@ -56,7 +61,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      account: "",
+      account: " ",
       buffer: null,
       contract: null,
       ipfsHash: " "
@@ -97,9 +102,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        <DocumentTitle title="SSSDapp">
-          <h1>Home, sweet home.</h1>
-        </DocumentTitle>
         <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a
             className="navbar-brand col-sm-3 col-md-2 mr-0"

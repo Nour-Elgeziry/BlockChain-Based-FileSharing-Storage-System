@@ -1,5 +1,5 @@
 pragma solidity >=0.4.21 <0.6.0;
-
+// Contract responsible for adding new contracts to blockchain
 contract Migrations {
   address public owner;
   uint public last_completed_migration;
