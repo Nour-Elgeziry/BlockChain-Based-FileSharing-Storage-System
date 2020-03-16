@@ -38,9 +38,10 @@ class App extends Component {
       { 
         call contract function that shows aloowed files;
       }*/
-      
     } else {
-      window.alert("Smart contract not deployed to detected network.");
+      window.alert(
+        "Smart contract not deployed on Ganache to detected network."
+      );
     }
   }
 
