@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "short_name": "SSSDapp",
   "name": "SSSDapp",
+=======
+  "short_name": "Starter Kit",
+  "name": "Dapp University Starter Kit",
+>>>>>>> bba824979674985594ca32d0368400240e6f4b73
   "icons": [
     {
       "src": "favicon.ico",
