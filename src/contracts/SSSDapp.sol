@@ -1,4 +1,4 @@
-pragma solidity 0.5.0;
+pragma solidity ^0.5.0;
 
 contract SSSDapp {
     string ipfsHash;
@@ -12,5 +12,4 @@ contract SSSDapp {
         // reading from the blockchain
         return ipfsHash;
     }
-
 }

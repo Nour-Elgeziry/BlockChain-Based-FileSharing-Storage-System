@@ -39,20 +39,14 @@
   "ast": {
     "absolutePath": "/SSSDapp/src/contracts/SSSDapp.sol",
     "exportedSymbols": {
-      "SSSDapp": [
-        79
-      ]
+      "SSSDapp": [79]
     },
     "id": 80,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          "0.5",
-          ".0"
-        ],
+        "literals": ["solidity", "0.5", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:22:1"
       },
@@ -63,9 +57,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 79,
-        "linearizedBaseContracts": [
-          79
-        ],
+        "linearizedBaseContracts": [79],
         "name": "SSSDapp",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -290,20 +282,14 @@
   "legacyAST": {
     "absolutePath": "/SSSDapp/src/contracts/SSSDapp.sol",
     "exportedSymbols": {
-      "SSSDapp": [
-        79
-      ]
+      "SSSDapp": [79]
     },
     "id": 80,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          "0.5",
-          ".0"
-        ],
+        "literals": ["solidity", "0.5", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:22:1"
       },
@@ -314,9 +300,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 79,
-        "linearizedBaseContracts": [
-          79
-        ],
+        "linearizedBaseContracts": [79],
         "name": "SSSDapp",
         "nodeType": "ContractDefinition",
         "nodes": [
