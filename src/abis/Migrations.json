@@ -73,14 +73,24 @@
   "ast": {
     "absolutePath": "/SSSDapp/src/contracts/Migrations.sol",
     "exportedSymbols": {
-      "Migrations": [56]
+      "Migrations": [
+        56
+      ]
     },
     "id": 57,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 1,
-        "literals": ["solidity", ">=", "0.4", ".21", "<", "0.6", ".0"],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".21",
+          "<",
+          "0.6",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "0:32:0"
       },
@@ -91,7 +101,9 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 56,
-        "linearizedBaseContracts": [56],
+        "linearizedBaseContracts": [
+          56
+        ],
         "name": "Migrations",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -469,7 +481,9 @@
               "src": "465:109:0",
               "statements": [
                 {
-                  "assignments": [43],
+                  "assignments": [
+                    43
+                  ],
                   "declarations": [
                     {
                       "constant": false,
@@ -708,14 +722,24 @@
   "legacyAST": {
     "absolutePath": "/SSSDapp/src/contracts/Migrations.sol",
     "exportedSymbols": {
-      "Migrations": [56]
+      "Migrations": [
+        56
+      ]
     },
     "id": 57,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 1,
-        "literals": ["solidity", ">=", "0.4", ".21", "<", "0.6", ".0"],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".21",
+          "<",
+          "0.6",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "0:32:0"
       },
@@ -726,7 +750,9 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 56,
-        "linearizedBaseContracts": [56],
+        "linearizedBaseContracts": [
+          56
+        ],
         "name": "Migrations",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -1104,7 +1130,9 @@
               "src": "465:109:0",
               "statements": [
                 {
-                  "assignments": [43],
+                  "assignments": [
+                    43
+                  ],
                   "declarations": [
                     {
                       "constant": false,
@@ -1346,7 +1374,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.2",
-  "updatedAt": "2020-03-20T12:35:43.824Z",
+  "updatedAt": "2020-03-21T15:16:51.569Z",
   "devdoc": {
     "methods": {}
   },

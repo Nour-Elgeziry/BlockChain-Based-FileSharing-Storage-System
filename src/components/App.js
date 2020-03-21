@@ -33,11 +33,11 @@ class App extends Component {
       console.log(contract);
       this.setState({ contract });
       const ipfsHash = await contract.methods.get().call();
+      console.log("hi babes", ipfsHash );
       this.setState({ ipfsHash });
-      /* Getting aloowed files to access for the user
-      { 
-        call contract function that shows aloowed files;
-      }*/
+      // storing the hash in the users struct
+      const username = await contract.methods.addUser("nour", "nour @", "password").call();
+      console.log("this is the user info: ", username);
     } else {
       window.alert(
         "Smart contract not deployed on Ganache to detected network."
