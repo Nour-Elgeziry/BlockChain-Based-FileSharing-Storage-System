@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import Web3 from "web3";
 import "./App.css";
-import RegisteUser from "./RegisterUser"
-
 import SSSDapp from "../abis/SSSDapp.json";
 
 const ipfsClient = require("ipfs-api");
@@ -37,7 +35,6 @@ class App extends Component {
       const ipfsHash = await contract.methods.get().call();
       console.log("the hash:", ipfsHash);
       this.setState({ ipfsHash });
-      
     } else {
       window.alert(
         "Smart contract not deployed on Ganache to detected network."
@@ -66,17 +63,16 @@ class App extends Component {
       buffer: null,
       contract: null,
       ipfsHash: " "
-
     };
   }
 
-  addingUser = event =>{
+  /*addingUser = event => {
     event.preventDefault();
     const username = this.state.contract.methods
       .addUser("nour", "nour @", "password")
       .call();
-      console.log("this is the user info: ", username);
-  }
+    console.log("this is the user info: ", username);
+  };*/
 
   captureFile = event => {
     event.preventDefault();
@@ -137,6 +133,7 @@ class App extends Component {
                   rel="noopener noreferrer"
                 >
                   <img
+                    alt=""
                     src={`https://ipfs.infura.io/ipfs/${this.state.ipfsHash}`}
                   />
                 </a>

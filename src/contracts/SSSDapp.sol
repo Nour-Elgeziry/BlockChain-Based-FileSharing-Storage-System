@@ -26,64 +26,40 @@ contract SSSDapp {
         string password;
         string[] myFiles;
         string[] sharedFiles;
-        //mapping(uint256 => myFiles) MyFiles; // holds list of user files
-        //mapping(uint256 => sharedFiles) SharedFiles; // holds list of shared files
-    }
-    struct myFiles {
-        string Hash;
-    }
-    struct sharedFiles {
-        string Hash;
     }
 
-    uint256 userID = 0;
-    uint256 fileNumber;
+    uint256 NextuserID;
     mapping(uint256 => Users) public Profiles; // holds list of users
+    uint256[] public userProfiles;
 
     // function to add users
     function addUser(
+        uint256 userID,
         string memory _userName,
         string memory _email,
         string memory _password
-    ) public returns (string memory) {
+    ) public returns (uint256) {
         Users storage users = Profiles[userID];
         users.userName = _userName;
         users.email = _email;
         users.password = _password;
-        userID++;
-        //uint256 id = userID;
-        return users.userName;
+        userProfiles.push(userID);
+        return userID;
     }
+
     // function to upload files
-    function uploadFile(string memory _userName, string memory _Hash)
+    function uploadFile(uint256 _userID, string memory _Hash)
         public
         returns (string memory)
     {
-        Users storage users = Profiles[userID];
-        users.userName = _userName;
-        users.myFiles.push(_Hash);
-        return users.myFiles[0];
-
+        Profiles[_userID].myFiles.push(_Hash);
+        return Profiles[_userID].myFiles[_userID];
     }
 
     //function to share files
-    function shareFile(string memory _userName, string memory _Hash) public {
-        Users storage users = Profiles[userID];
-        users.userName = _userName;
-        users.sharedFiles.push(_Hash);
+    function shareFile(uint256 userID, string memory _Hash) public {
+        Profiles[userID].sharedFiles.push(_Hash);
 
     }
-
-    /* 
-
-    function start(bytes32 userName, bytes32 email, bytes32 Hash)
-        public
-        returns (uint256 id)
-    {
-        struct SSSDapp.Users storage pointer user = Profiles[userID];
-
-        userID++;
-
-    }*/
 
 }
