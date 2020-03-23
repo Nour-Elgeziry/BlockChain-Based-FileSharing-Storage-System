@@ -66,13 +66,6 @@ class App extends Component {
     };
   }
 
-  /*addingUser = event => {
-    event.preventDefault();
-    const username = this.state.contract.methods
-      .addUser("nour", "nour @", "password")
-      .call();
-    console.log("this is the user info: ", username);
-  };*/
 
   captureFile = event => {
     event.preventDefault();

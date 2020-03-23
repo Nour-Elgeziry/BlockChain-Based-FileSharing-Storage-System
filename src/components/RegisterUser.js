@@ -46,39 +46,58 @@ class RegisterUser extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { username: "", email: "", password: "", userID: 0 };
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      userID: 0,
+      account: ""
+    };
   }
 
   handleChange = ({ target }) => {
     this.setState({ [target.name]: target.value });
   };
 
-  /*AddUser = () => {
-    this.props.history.push("/");
-  };*/
-
   addingUser = event => {
     event.preventDefault();
+    console.log(
+      this.state.contract.methods
+        .addUser(
+          this.state.userID,
+          this.state.username,
+          this.state.email,
+          this.state.password
+        )
+        .send({ from: this.state.account })
+    );
     this.setState({ userID: this.state.userID + 1 });
-    console.log(this.state.userID);
-    let userid = this.state.contract.methods
-      .addUser(
-        this.state.userID,
-        this.state.username,
-        this.state.email,
-        this.state.password
-      )
-      .call();
-    console.log("this is the user info: ", userid);
   };
 
   uploadFile = event => {
     event.preventDefault();
-    let uploadedHash = this.state.contract.methods.uploadFile(
-      this.state.userID,
-      "xxxhhh"
+    console.log(
+      "uploaded file hash :",
+      this.state.contract.methods
+        .uploadFile(0, "xxxhhh") //this.state.userID
+        .send({ from: this.state.account })
     );
-    console.log("the array contents : ", uploadedHash);
+  };
+
+  getUser = event => {
+    event.preventDefault();
+    console.log(
+      "gotten user info :",
+      this.state.contract.methods.getUser(0).call()
+    );
+  };
+
+  getUserNumber = event => {
+    event.preventDefault();
+    console.log(
+      "user number: ",
+      this.state.contract.methods.getUsersNumber().call()
+    );
   };
 
   render() {
@@ -142,6 +161,22 @@ class RegisterUser extends Component {
           >
             uploadFile
           </button>
+
+          <button
+            className="btn btn-lg btn-primary btn-block"
+            type="submit"
+            onClick={this.getUser}
+          >
+            getUser
+          </button>
+
+          <button
+            className="btn btn-lg btn-primary btn-block"
+            type="submit"
+            onClick={this.getUserNumber}
+          >
+            getUserNumber
+          </button>
         </form>
         <h3>Your username is: {this.state.username}</h3>
         <h3>Your email is: {this.state.email}</h3>
@@ -152,3 +187,6 @@ class RegisterUser extends Component {
 }
 
 export default RegisterUser;
+/*AddUser = () => {
+    this.props.history.push("/");
+  };*/

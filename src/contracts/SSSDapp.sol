@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 contract SSSDapp {
     string ipfsHash;
@@ -20,6 +21,7 @@ contract SSSDapp {
     4. MyFiles // alterded when 1.user uploads file , stores the file hash(set) 2. user loggs in, returns ipfsHash(get)
     5. SharedFiles // altered whenother users share files , user inputs shared file hashes here.
      */
+
     struct Users {
         string userName;
         string email;
@@ -28,9 +30,10 @@ contract SSSDapp {
         string[] sharedFiles;
     }
 
-    uint256 NextuserID;
     mapping(uint256 => Users) public Profiles; // holds list of users
     uint256[] public userProfiles;
+
+    //Seter functions (use methods.send)
 
     // function to add users
     function addUser(
@@ -38,28 +41,46 @@ contract SSSDapp {
         string memory _userName,
         string memory _email,
         string memory _password
-    ) public returns (uint256) {
+    ) public {
         Users storage users = Profiles[userID];
         users.userName = _userName;
         users.email = _email;
         users.password = _password;
         userProfiles.push(userID);
-        return userID;
     }
 
     // function to upload files
-    function uploadFile(uint256 _userID, string memory _Hash)
-        public
-        returns (string memory)
-    {
+    function uploadFile(uint256 _userID, string memory _Hash) public {
         Profiles[_userID].myFiles.push(_Hash);
-        return Profiles[_userID].myFiles[_userID];
     }
 
     //function to share files
-    function shareFile(uint256 userID, string memory _Hash) public {
-        Profiles[userID].sharedFiles.push(_Hash);
+    function sharedFile(uint256 _userID, string memory _Hash) public {
+        Profiles[_userID].sharedFiles.push(_Hash);
+    }
 
+    // getter functions (use methods.call)
+    // function to get number of users
+    function getUsersNumber() public view returns (uint256[] memory) {
+        return userProfiles;
+    }
+
+    //function get specific user
+    function getUser(uint256 userID)
+        public
+        view
+        returns (string memory, string memory, string[] memory)
+    {
+        return (
+            Profiles[userID].userName,
+            Profiles[userID].email,
+            Profiles[userID].myFiles
+        );
+    }
+
+    //function that returns username with id0
+    function returnName(uint256 userID) public view returns (string memory) {
+        return Profiles[userID].userName;
     }
 
 }
