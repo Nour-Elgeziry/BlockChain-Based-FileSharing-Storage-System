@@ -140,22 +140,30 @@ class App extends Component {
 
   render() {
     return (
-      /* <UserRegestration state={this.state}
-        handleChange={this.handleChange}
-        
-        registerUser={this.registerUser}
-      />*/
-      /*<Signin
-        state={this.state}
-        handleChange={this.handleChange}
-        signIn={this.signIn}
-      />*/
-
-      <UploadFile
-        onSubmit={this.onSubmit}
-        captureFile={this.captureFile}
-        state={this.state}
-      />
+      <div>
+        {" "}
+        <card>
+          <UserRegestration
+            state={this.state}
+            handleChange={this.handleChange}
+            registerUser={this.registerUser}
+          />
+        </card>
+        <card>
+          <Signin
+            state={this.state}
+            handleChange={this.handleChange}
+            signIn={this.signIn}
+          />
+        </card>
+        <card>
+          <UploadFile
+            onSubmit={this.onSubmit}
+            captureFile={this.captureFile}
+            state={this.state}
+          />
+        </card>
+      </div>
     );
   }
 }
