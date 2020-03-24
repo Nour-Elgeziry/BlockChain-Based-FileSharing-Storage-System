@@ -2,17 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Route, Link, BrowserRouter as Router } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
-import RegisterUser from "./components/RegisterUser";
-import App from "./components/App";
-import SignIn from "./components/signin";
+import RegisterUser from "./components/App";
+import App from "./components/notApp";
+import SignIn from "./components/Signin";
 import * as serviceWorker from "./serviceWorker";
+import uploadFile from "./components/uploadFile";
 
 const routing = (
   <Router>
     <div>
       <Route exact path="/" component={RegisterUser} />
-      <Route path="/Home" component={App} />
       <Route path="/SignIn" component={SignIn} />
+      <Route path="/Upload File" component={uploadFile} />
     </div>
   </Router>
 );

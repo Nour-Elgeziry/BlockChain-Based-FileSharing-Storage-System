@@ -1,21 +1,17 @@
 import React, { Component } from "react";
 import Web3 from "web3";
+import "./App.css";
 import SSSDapp from "../abis/SSSDapp.json";
-import Signin from "./Signin";
-import UserRegestration from "./userRegestration";
-import UploadFile from "./uploadFile";
+import RegisterUser from "./App";
 
 const ipfsClient = require("ipfs-api");
 const ipfs = ipfsClient({
   host: "ipfs.infura.io",
   port: 5001,
   protocol: "https"
-});
+}); // leaving out the arguments will default to these values
 
-class App extends Component {
-  /*goToSignIn = () => {
-    this.props.history.push("/SignIn");
-  };*/
+class notApp extends Component {
   async componentWillMount() {
     await this.loadWeb3();
     await this.loadBlockchainData();
@@ -71,9 +67,7 @@ class App extends Component {
       registerUsername: "",
       registeEmail: "",
       registerPassword: "",
-      registerUserID: 0,
-      signInUserID: 2,
-      signInPassword: "yup"
+      registerUserID: 0
     };
   }
 
@@ -82,30 +76,22 @@ class App extends Component {
   };
 
   registerUser = event => {
-    event.preventDefault();
     console.log(this.state.registerUsername);
-
-    this.state.contract.methods
-      .registerUser(
-        this.state.registerUserID,
-        this.state.registerUsername,
-        this.state.registerEmail,
-        this.state.registerPassword
-      )
-      .send({ from: this.state.account });
-    this.setState({ userID: this.state.registerUserID + 1 });
-    this.props.history.push("/SignIn");
-  };
-
-  signIn = event => {
     event.preventDefault();
-    const signedin = this.state.contract.methods
-      .signIn(this.state.signInUserID, this.state.signInPassword)
-      .call();
-    const thebool = Boolean(signedin);
-    console.log(thebool);
-    this.props.history.push("/");
+    console.log(
+      this.state.contract.methods
+        .registerUser(
+          this.state.registerUserID,
+          this.state.registerUsername,
+          this.state.registerEmail,
+          this.state.registerPassword
+        )
+        .send({ from: this.state.account })
+    );
+    this.props.history.push("/SignIn");
+    this.setState({ userID: this.state.registerUserID + 1 });
   };
+
   captureFile = event => {
     event.preventDefault();
     const file = event.target.files[0];
@@ -137,27 +123,59 @@ class App extends Component {
         });
     });
   };
-
   render() {
     return (
-      /* <UserRegestration state={this.state}
-        handleChange={this.handleChange}
-        
-        registerUser={this.registerUser}
-      />*/
-      /*<Signin
-        state={this.state}
-        handleChange={this.handleChange}
-        signIn={this.signIn}
-      />*/
-
-      <UploadFile
-        onSubmit={this.onSubmit}
-        captureFile={this.captureFile}
-        state={this.state}
-      />
+      <div>
+        <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+          <a
+            className="navbar-brand col-sm-3 col-md-2 mr-0"
+            href="https://github.com/Nour-Elgeziry/SSSDaap.git"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SSSDapp
+          </a>
+          <ul className="navbar-nav px-3">
+            <li className="nav-item text-norap d-none d-sm-none d-sm-block">
+              <small className="text-white">{this.state.account}</small>
+            </li>
+          </ul>
+        </nav>
+        <div className="container-fluid mt-5">
+          <div className="row">
+            <main role="main" className="col-lg-12 d-flex text-center">
+              <div className="content mr-auto ml-auto">
+                <a
+                  href={`https://ipfs.infura.io/ipfs/${this.state.ipfsHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    alt=""
+                    src={`https://ipfs.infura.io/ipfs/${this.state.ipfsHash}`}
+                  />
+                </a>
+                <p>&nbsp;</p>
+                <h2>Choose File</h2>
+                <form onSubmit={this.onSubmit}>
+                  <input type="file" onChange={this.captureFile} />
+                  <input type="submit" />
+                </form>
+                <RegisterUser
+                  registeruser={this.registerUser}
+                  handlechange={this.handleChange}
+                />
+                <h3>Your user id is: {this.registerUserID}</h3>
+                <h3>Your username is: {this.registerUsername}</h3>
+                <h3>Your email is: {this.registerEmail}</h3>
+                <h3>Your password is: {this.registerPassword}</h3>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
     );
   }
 }
 
-export default App;
+export default notApp;
