@@ -36,7 +36,7 @@ contract SSSDapp {
     //Seter functions (use methods.send)
 
     // function to add users
-    function addUser(
+    function registerUser(
         uint256 userID,
         string memory _userName,
         string memory _email,
@@ -77,10 +77,20 @@ contract SSSDapp {
             Profiles[userID].myFiles
         );
     }
+    // Signing in function
+    function signIn(uint256 _userID, string memory _password)
+        public
+        returns (bool)
+    {
+        if (
+            keccak256(abi.encodePacked(Profiles[_userID].password)) ==
+            keccak256(abi.encodePacked(_password))
+        ) {
+            return true;
+        } else {
+            return false;
+        }
 
-    //function that returns username with id0
-    function returnName(uint256 userID) public view returns (string memory) {
-        return Profiles[userID].userName;
     }
 
 }
