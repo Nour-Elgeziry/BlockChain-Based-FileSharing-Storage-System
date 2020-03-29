@@ -11,7 +11,7 @@ const ipfs = ipfsClient({
   protocol: "https"
 }); // leaving out the arguments will default to these values
 
-class notApp extends Component {
+class App extends Component {
   async componentWillMount() {
     await this.loadWeb3();
     await this.loadBlockchainData();
@@ -178,4 +178,4 @@ class notApp extends Component {
   }
 }
 
-export default notApp;
+export default App;

@@ -30,67 +30,75 @@ contract SSSDapp {
         string[] sharedFiles;
     }
 
-    mapping(uint256 => Users) public Profiles; // holds list of users
-    uint256[] public userProfiles;
+    mapping(address => Users) public Profiles; // holds list of users
+    address[] public userProfiles;
 
     //Seter functions (use methods.send)
 
     // function to add users
     function registerUser(
-        uint256 userID,
+        address userAddress,
         string memory _userName,
         string memory _email,
         string memory _password
-    ) public {
-        Users storage users = Profiles[userID];
+    ) public returns (address, string memory) {
+        Users storage users = Profiles[userAddress];
         users.userName = _userName;
         users.email = _email;
         users.password = _password;
-        userProfiles.push(userID);
+        userProfiles.push(userAddress);
+        return (userAddress, users.userName);
     }
 
     // function to upload files
-    function uploadFile(uint256 _userID, string memory _Hash) public {
-        Profiles[_userID].myFiles.push(_Hash);
+    function uploadFile(address userAddress, string memory _Hash) public {
+        Profiles[userAddress].myFiles.push(_Hash);
     }
 
     //function to share files
-    function sharedFile(uint256 _userID, string memory _Hash) public {
-        Profiles[_userID].sharedFiles.push(_Hash);
+    function sharedFile(address userAddress, string memory _Hash) public {
+        Profiles[userAddress].sharedFiles.push(_Hash);
     }
 
     // getter functions (use methods.call)
     // function to get number of users
-    function getUsersNumber() public view returns (uint256[] memory) {
+    function getUsersNumber() public view returns (address[] memory) {
         return userProfiles;
     }
 
     //function get specific user
-    function getUser(uint256 userID)
+    function getUser(address userAddress)
         public
         view
-        returns (string memory, string memory, string[] memory)
+        returns (address, string memory, string memory, string[] memory)
     {
         return (
-            Profiles[userID].userName,
-            Profiles[userID].email,
-            Profiles[userID].myFiles
+            userAddress,
+            Profiles[userAddress].userName,
+            Profiles[userAddress].email,
+            Profiles[userAddress].myFiles
         );
     }
     // Signing in function
-    function signIn(uint256 _userID, string memory _password)
-        public
-        returns (bool)
-    {
+    function signIn(
+        address userAddress,
+        string memory _userName,
+        string memory _password
+    ) public returns (string memory) {
         if (
-            keccak256(abi.encodePacked(Profiles[_userID].password)) ==
-            keccak256(abi.encodePacked(_password))
+            keccak256(abi.encodePacked(Profiles[userAddress].userName)) ==
+            keccak256(abi.encodePacked(_userName))
         ) {
-            return true;
-        } else {
-            return false;
+            if (
+                keccak256(abi.encodePacked(Profiles[userAddress].password)) ==
+                keccak256(abi.encodePacked(_password))
+            ) {
+                return "access granted";
+            } else {
+                return " access denied";
+            }
+
         }
 
     }
-
 }
