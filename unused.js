@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Web3 from "web3";
 import "./App.css";
 import SSSDapp from "../abis/SSSDapp.json";
-import RegisterUser from "./App";
+import RegisterUser from "./src/components/App";
 
 const ipfsClient = require("ipfs-api");
 const ipfs = ipfsClient({

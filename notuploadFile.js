@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-class uploadFile extends Component {
+class notuploadFile extends Component {
   render() {
     return (
       <div>
@@ -47,4 +47,4 @@ class uploadFile extends Component {
   }
 }
 
-export default uploadFile;
+export default notuploadFile;

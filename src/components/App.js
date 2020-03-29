@@ -1,19 +1,56 @@
-/*import React, { Component } from "react";
-import Web3 from "web3";
-import SSSDapp from "../abis/SSSDapp.json";
-import Signin from "./Login";
-import UserRegestration from "./Regestration";
-import UploadFile from "./uploadFile";
-import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-const ipfsClient = require("ipfs-api");
-const ipfs = ipfsClient({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https"
-});
-class App extends Component {
-  /* goToSignIn = () => {
+import Home from "./Home";
+import Dashboard from "./Dashboard";
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      loggedInStatus: "NOT_LOGGED_IN"
+    };
+  }
+
+  handleLogin(data) {
+    this.setState({
+      loggedInStatus: "LOGGED_IN"
+    });
+    console.log("inside app.js");
+  }
+
+  render() {
+    return (
+      <div className="app">
+        <BrowserRouter>
+          {" "}
+          <Switch>
+            <Route
+              exact
+              path={"/"}
+              render={props => (
+                <Home {...props} handleLogin={this.handleLogin} />
+              )}
+            />
+            <Route
+              exact
+              path={"/Dashboard"}
+              render={props => (
+                <Dashboard
+                  {...props}
+                  loggedInStatus={this.state.loggedInStatus}
+                />
+              )}
+            />
+          </Switch>
+        </BrowserRouter>
+      </div>
+    );
+  }
+}
+export default App;
+
+/* goToSignIn = () => {
     console.log("i am at the function");
     this.props.history.push("/UploadFile");
   };
@@ -246,5 +283,5 @@ class App extends Component {
   }
 }
 
-export default App;
+
 */

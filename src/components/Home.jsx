@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./Home.scss";
 import { Login, Registeration } from "./auth/index";
 import Web3 from "web3";
@@ -10,11 +10,11 @@ const ipfs = ipfsClient({
   port: 5001,
   protocol: "https"
 });
-
-class Home extends React.Component {
+export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isregistered: false,
       account: "",
       buffer: null,
       contract: null,
@@ -94,8 +94,6 @@ class Home extends React.Component {
   }
 
   registerUser() {
-    const { registerEmail, isAccessGranted } = this.state;
-
     this.state.contract.methods
       .registerUser(
         this.state.account,
@@ -106,15 +104,11 @@ class Home extends React.Component {
       .send({ from: this.state.account });
 
     console.log(this.state.contract.methods.getUser(this.state.account).call());
-
-    console.log("the state", registerEmail);
-    this.setState(prevState => ({
-      isAccessGranted: !prevState.isAccessGranted
-    }));
-    console.log("access state", isAccessGranted);
+    //this.props.history.push("/Dashboard");
   }
 
   signinUser() {
+    const { history } = this.props;
     console.log("I am here");
     this.state.contract.methods
       .signIn(
@@ -127,17 +121,18 @@ class Home extends React.Component {
         const access = x;
         if (access === "access granted") {
           console.log("hello");
+          history.push("/Dashboard");
         } else {
           console.log("by bye");
         }
       });
   }
-
   render() {
     const { isLogginActive } = this.state;
-    const { isAccessGranted } = this.state;
+
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
+
     return (
       <div className="Home">
         <div className="login">
@@ -164,6 +159,7 @@ class Home extends React.Component {
             currentActive={currentActive}
             containerRef={ref => (this.rightSide = ref)}
             onClick={this.changeState.bind(this)}
+            history={this.props.history}
           />
         </div>
       </div>
@@ -185,7 +181,6 @@ const RightSide = props => {
   );
 };
 
-export default Home;
 /*<div className="container" ref={ref => (this.container = ref)}>
           {isAccessGranted && (
             <UploadFile containerRef={ref => (this.current = ref)} />
