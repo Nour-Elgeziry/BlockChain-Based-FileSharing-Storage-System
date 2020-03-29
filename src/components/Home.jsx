@@ -104,7 +104,7 @@ export default class Home extends Component {
       .send({ from: this.state.account });
 
     console.log(this.state.contract.methods.getUser(this.state.account).call());
-    //this.props.history.push("/Dashboard");
+    this.props.history.push("/Dashboard");
   }
 
   signinUser() {
