@@ -4,7 +4,6 @@ export class Login extends React.Component {
   constructor(props) {
     super(props);
   }
-  
 
   render() {
     return (
@@ -38,7 +37,7 @@ export class Login extends React.Component {
           <button
             type="button"
             className="btn"
-            onClick={(this.props.signinFunction)}
+            onClick={this.props.signinFunction}
           >
             Login
           </button>
