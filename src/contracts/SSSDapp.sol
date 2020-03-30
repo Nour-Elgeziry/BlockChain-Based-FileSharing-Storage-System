@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
+
 contract SSSDapp {
     string ipfsHash;
 
@@ -13,6 +14,7 @@ contract SSSDapp {
         // reading from the blockchain
         return ipfsHash;
     }
+
     /*creat object that stores the following:
     
     1. user name * 
@@ -56,7 +58,7 @@ contract SSSDapp {
     }
 
     //function to share files
-    function sharedFile(address userAddress, string memory _Hash) public {
+    function shareFile(address userAddress, string memory _Hash) public {
         Profiles[userAddress].sharedFiles.push(_Hash);
     }
 
@@ -70,15 +72,23 @@ contract SSSDapp {
     function getUser(address userAddress)
         public
         view
-        returns (address, string memory, string memory, string[] memory)
+        returns (
+            address,
+            string memory,
+            string memory,
+            string[] memory,
+            string[] memory
+        )
     {
         return (
             userAddress,
             Profiles[userAddress].userName,
             Profiles[userAddress].email,
-            Profiles[userAddress].myFiles
+            Profiles[userAddress].myFiles,
+            Profiles[userAddress].sharedFiles
         );
     }
+
     // Signing in function
     function signIn(
         address userAddress,
@@ -97,8 +107,6 @@ contract SSSDapp {
             } else {
                 return " access denied";
             }
-
         }
-
     }
 }

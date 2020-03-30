@@ -1,23 +1,76 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
+import Web3 from "web3";
+import SSSDapp from "../abis/SSSDapp.json";
+
 import Home from "./Home";
 import Dashboard from "./Dashboard";
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      loggedInStatus: "NOT_LOGGED_IN"
+      account: "",
+      buffer: null,
+      contract: null,
+      ipfsHash: " ",
+      isLogginActive: true,
+      isAccessGranted: false,
+      registerUsername: "",
+      registerEmail: "",
+      registerPassword: "",
+      signinUsername: "",
+      signinPassword: "",
+      sharedUserAddress: ""
     };
   }
-
-  handleLogin(data) {
-    this.setState({
-      loggedInStatus: "LOGGED_IN"
-    });
-    console.log("inside app.js");
+  async componentDidMount() {
+    await this.loadWeb3();
+    await this.loadBlockchainData();
   }
+
+  async loadBlockchainData() {
+    const web3 = window.web3;
+    // Load account
+    const accounts = await web3.eth.getAccounts(); // get account and return array
+    console.log("list of accounts", accounts);
+    this.setState({ account: accounts[0] });
+    const networkId = await web3.eth.net.getId(); // getting network id
+    console.log(networkId);
+    const networkData = SSSDapp.networks[networkId];
+    if (networkData) {
+      // Fetching contract
+      const contract = web3.eth.Contract(SSSDapp.abi, networkData.address);
+      console.log(contract);
+      this.setState({ contract });
+      const ipfsHash = await contract.methods.get().call();
+      console.log("the hash:", ipfsHash);
+      this.setState({ ipfsHash });
+    } else {
+      window.alert(
+        "Smart contract not deployed on Ganache to detected network."
+      );
+    }
+  }
+
+  // setting web3 to connect to block chain
+  async loadWeb3() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
+    }
+  }
+
+  handleChange = ({ target }) => {
+    this.setState({ [target.name]: target.value });
+  };
 
   render() {
     return (
@@ -29,7 +82,11 @@ class App extends React.Component {
               exact
               path={"/"}
               render={props => (
-                <Home {...props} handleLogin={this.handleLogin} />
+                <Home
+                  {...props}
+                  state={this.state}
+                  handleChange={this.handleChange}
+                />
               )}
             />
             <Route
@@ -38,7 +95,9 @@ class App extends React.Component {
               render={props => (
                 <Dashboard
                   {...props}
-                  loggedInStatus={this.state.loggedInStatus}
+                  values={this.state}
+                  updateState={this.setState}
+                  handleChange={this.handleChange}
                 />
               )}
             />

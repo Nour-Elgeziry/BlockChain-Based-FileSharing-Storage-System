@@ -1,20 +1,14 @@
 import React, { Component } from "react";
-import "./Home.scss";
+import "./Main.scss";
 import { Login, Registeration } from "./auth/index";
+
 import Web3 from "web3";
 import SSSDapp from "../abis/SSSDapp.json";
 
-const ipfsClient = require("ipfs-api");
-const ipfs = ipfsClient({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https"
-});
 export default class Home extends Component {
-  constructor(props) {
+  /*constructor(props) {
     super(props);
     this.state = {
-      isregistered: false,
       account: "",
       buffer: null,
       contract: null,
@@ -27,18 +21,19 @@ export default class Home extends Component {
       signinUsername: "",
       signinPassword: ""
     };
-  }
-  async componentWillMount() {
-    await this.loadWeb3();
-    await this.loadBlockchainData();
+  }*/
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLogginActive: true
+    };
   }
 
   componentDidMount() {
-    //Add .right by default
     this.rightSide.classList.add("right");
   }
 
-  async loadBlockchainData() {
+  /*async loadBlockchainData() {
     const web3 = window.web3;
     // Load account
     const accounts = await web3.eth.getAccounts(); // get account and return array
@@ -74,11 +69,11 @@ export default class Home extends Component {
         "Non-Ethereum browser detected. You should consider trying MetaMask!"
       );
     }
-  }
+  }*/
 
-  handleChange = ({ target }) => {
+  /*handleChange = ({ target }) => {
     this.setState({ [target.name]: target.value });
-  };
+  };*/
 
   changeState() {
     const { isLogginActive } = this.state;
@@ -94,27 +89,31 @@ export default class Home extends Component {
   }
 
   registerUser() {
-    this.state.contract.methods
+    this.props.state.contract.methods
       .registerUser(
-        this.state.account,
-        this.state.registerUsername,
-        this.state.registerEmail,
-        this.state.registerPassword
+        this.props.state.account,
+        this.props.state.registerUsername,
+        this.props.state.registerEmail,
+        this.props.state.registerPassword
       )
-      .send({ from: this.state.account });
-
-    console.log(this.state.contract.methods.getUser(this.state.account).call());
+      .send({ from: this.props.state.account });
     this.props.history.push("/Dashboard");
+  }
+
+  getUser() {
+    console.log(
+      this.props.state.contract.methods.getUser(this.props.state.account).call()
+    );
   }
 
   signinUser() {
     const { history } = this.props;
     console.log("I am here");
-    this.state.contract.methods
+    this.props.state.contract.methods
       .signIn(
-        this.state.account,
-        this.state.signinUsername,
-        this.state.signinPassword
+        this.props.state.account,
+        this.props.state.signinUsername,
+        this.props.state.signinPassword
       )
       .call()
       .then(function(x) {
@@ -141,17 +140,18 @@ export default class Home extends Component {
             {isLogginActive && (
               <Login
                 containerRef={ref => (this.current = ref)}
-                values={this.state}
-                valuesChange={this.handleChange}
+                values={this.props.state}
+                valuesChange={this.props.handleChange}
                 signinFunction={this.signinUser.bind(this)}
               />
             )}
             {!isLogginActive && (
               <Registeration
                 containerRef={ref => (this.Registeration = ref)}
-                values={this.state}
-                valuesChange={this.handleChange}
+                values={this.props.state}
+                valuesChange={this.props.handleChange}
                 registerFunction={this.registerUser.bind(this)}
+                getUser={this.getUser.bind(this)}
               />
             )}
           </div>

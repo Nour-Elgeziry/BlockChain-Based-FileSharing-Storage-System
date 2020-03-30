@@ -53,7 +53,11 @@ export class Registeration extends React.Component {
             Register
           </button>
         </div>
-        <h3>The username is {this.props.values.registerUsername}</h3>
+        <div className="footer">
+          <button type="button" className="btn" onClick={this.props.getUser}>
+            Get user (test)
+          </button>
+        </div>
       </div>
     );
   }
