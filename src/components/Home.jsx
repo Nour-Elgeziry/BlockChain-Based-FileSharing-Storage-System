@@ -108,7 +108,7 @@ export default class Home extends Component {
 
   signinUser() {
     const { history } = this.props;
-    console.log("I am here");
+
     this.props.state.contract.methods
       .signIn(
         this.props.state.account,
@@ -119,7 +119,7 @@ export default class Home extends Component {
       .then(function(x) {
         const access = x;
         if (access === "access granted") {
-          console.log("hello");
+          console.log("access granted");
           history.push("/Dashboard");
         } else {
           console.log("by bye");

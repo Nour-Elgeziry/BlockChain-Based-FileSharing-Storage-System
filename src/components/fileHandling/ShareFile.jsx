@@ -10,12 +10,9 @@ export class ShareFile extends React.Component {
         <div className="content">
           <div className="form">
             <div className="form-group">
-              <a
-                href={`https://ipfs.infura.io/ipfs/${this.props.values.ipfsHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              ></a>
               <h2>Choose File to Share</h2>
+
+              
 
               <input type="file" onChange={this.props.captureFile} />
             </div>
@@ -33,6 +30,14 @@ export class ShareFile extends React.Component {
         <div className="footer">
           <button type="button" className="btn" onClick={this.props.onSubmit}>
             Share
+          </button>
+
+          <button
+            type="button"
+            className="btn"
+            onClick={this.props.showSharedFiles}
+          >
+            Show Files
           </button>
         </div>
       </div>

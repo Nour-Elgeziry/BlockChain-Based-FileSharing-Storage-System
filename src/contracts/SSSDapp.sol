@@ -109,4 +109,20 @@ contract SSSDapp {
             }
         }
     }
+
+    function getMyFiles(address userAdress)
+        public
+        view
+        returns (string[] memory)
+    {
+        return Profiles[userAdress].myFiles;
+    }
+
+    function getSharedFiles(address userAdress)
+        public
+        view
+        returns (string[] memory)
+    {
+        return Profiles[userAdress].sharedFiles;
+    }
 }

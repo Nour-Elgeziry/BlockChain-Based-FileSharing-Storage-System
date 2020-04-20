@@ -2,26 +2,19 @@ import React, { Component } from "react";
 import "./Main.scss";
 import { UploadFile, ShareFile } from "./fileHandling/index";
 
-import Web3 from "web3";
-import SSSDapp from "../abis/SSSDapp.json";
-
 const ipfsClient = require("ipfs-api");
 const ipfs = ipfsClient({
   host: "ipfs.infura.io",
   port: 5001,
-  protocol: "https"
+  protocol: "https",
 });
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      //account: "",
       buffer: null,
-      isShareFile: true
-
-      // contract: null,
-      //ipfsHash: " "
+      isShareFile: true,
     };
   }
   componentDidMount() {
@@ -38,12 +31,16 @@ export default class Home extends Component {
       this.rightSide.classList.remove("left");
       this.rightSide.classList.add("right");
     }
-    this.setState(prevState => ({ isShareFile: !prevState.isShareFile }));
+    this.setState((prevState) => ({
+      isShareFile: !prevState.isShareFile,
+    }));
     console.log("is share", this.state.isShareFile);
   }
-  captureFile = event => {
+  captureFile = (event) => {
     event.preventDefault();
+
     const file = event.target.files[0];
+
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(file);
     reader.onloadend = () => {
@@ -51,59 +48,94 @@ export default class Home extends Component {
     };
   };
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     const { isShareFile } = this.state;
+
     event.preventDefault();
     console.log("Submitting file to ipfs...");
     //1. upload file to ipfs
     ipfs.add(this.state.buffer, (error, result) => {
       const ipfsHash = result[0].hash;
+      console.log("returned ipfs hash from infura", ipfsHash);
 
       if (error) {
         console.error(error);
         return;
       }
-      //2. store file on blockchain
+
+      /*2. store file on blockchain
       this.props.values.contract.methods
         .set(ipfsHash)
         .send({ from: this.props.values.account })
-        .then(r => {
+        .then((r) => {
           this.props.updateState({ ipfsHash });
-        });
+        });*/
+      // check if sharig or uploading file
+      if (isShareFile) {
+        //Sharing File
+
+        console.log("pushing file to slected user's Shared array");
+        this.props.values.contract.methods
+          .shareFile(this.props.values.sharedUserAddress, ipfsHash)
+          .send({ from: this.props.values.account });
+
+        console.log("pushing file to my Shared array");
+        this.props.values.contract.methods
+          .shareFile(this.props.values.account, ipfsHash)
+          .send({ from: this.props.values.account });
+      } else {
+        console.log("pushing file to my upload array");
+        this.props.values.contract.methods
+          .uploadFile(this.props.values.account, ipfsHash)
+          .send({ from: this.props.values.account });
+      }
     });
-    if (isShareFile) {
-      console.log(
-        "pushing file to slected user's Shared array",
-        this.props.values.contract.methods
-          .shareFile(
-            this.props.values.sharedUserAddress,
-            this.props.values.ipfsHash
-          )
-          .send({ from: this.props.values.account })
-      );
-
-      console.log(
-        "pushing file to my Shared array",
-        this.props.values.contract.methods
-          .shareFile(this.props.values.account, this.props.values.ipfsHash)
-          .send({ from: this.props.values.account })
-      );
-    } else {
-      console.log(
-        "pushing file to Uploadarray",
-        this.props.values.contract.methods
-          .uploadFile(this.props.values.account, this.props.values.ipfsHash)
-          .send({ from: this.props.values.account })
-      );
-    }
-
-    console.log(
-      "stored file info",
-      this.props.values.contract.methods
-        .getUser(this.props.values.account)
-        .call()
-    );
   };
+
+  goToShowUploadedFiles() {
+    const { history } = this.props;
+    const { ipfsUploadedHashArray } = this.props.values;
+
+    // Get Uploaded Files
+
+    this.props.values.contract.methods
+      .getMyFiles(this.props.values.account)
+      .call()
+      .then((ipfsUploadedHashArray) => {
+        this.props.updateState({ ipfsUploadedHashArray });
+        console.log(
+          "return value from getMyFiles function",
+          ipfsUploadedHashArray
+        );
+
+        console.log(
+          "State result from the uploadfiles array",
+          ipfsUploadedHashArray
+        );
+      });
+    history.push("/ShowUploadedFiles");
+  }
+
+  goToShowSharedFiles() {
+    const { history } = this.props;
+    const { ipfsSharedHashArray } = this.props.values;
+
+    //3. get shared files
+    this.props.values.contract.methods
+      .getSharedFiles(this.props.values.account)
+      .call()
+      .then((x) => {
+        this.props.updateState({ ipfsSharedHashArray: x });
+        console.log(
+          "return value from getSharedFiles function",
+          ipfsSharedHashArray
+        );
+
+        console.log("State resukt of the shared array", ipfsSharedHashArray);
+      });
+
+    history.push("/ShowSharedFiles");
+  }
 
   render() {
     const { isShareFile } = this.state;
@@ -114,29 +146,31 @@ export default class Home extends Component {
     return (
       <div className="Home">
         <div className="login">
-          <div className="container" ref={ref => (this.container = ref)}>
+          <div className="container" ref={(ref) => (this.container = ref)}>
             {!isShareFile && (
               <UploadFile
-                containerRef={ref => (this.Registeration = ref)}
+                containerRef={(ref) => (this.Registeration = ref)}
                 values={this.props.values}
                 onSubmit={this.onSubmit}
                 captureFile={this.captureFile}
+                showUploadedFiles={this.goToShowUploadedFiles.bind(this)}
               />
             )}
             {isShareFile && (
               <ShareFile
-                containerRef={ref => (this.Registeration = ref)}
+                containerRef={(ref) => (this.Registeration = ref)}
                 values={this.props.values}
                 valuesChange={this.props.handleChange}
                 onSubmit={this.onSubmit}
                 captureFile={this.captureFile}
+                showSharedFiles={this.goToShowSharedFiles.bind(this)}
               />
             )}
           </div>
           <RightSide
             current={current}
             currentActive={currentActive}
-            containerRef={ref => (this.rightSide = ref)}
+            containerRef={(ref) => (this.rightSide = ref)}
             onClick={this.changeState.bind(this)}
             history={this.props.history}
           />
@@ -146,7 +180,7 @@ export default class Home extends Component {
   }
 }
 
-const RightSide = props => {
+const RightSide = (props) => {
   return (
     <div
       className="right-side"

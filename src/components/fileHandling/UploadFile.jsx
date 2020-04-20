@@ -10,14 +10,9 @@ export class UploadFile extends React.Component {
         <div className="content">
           <div className="form">
             <div className="form-group">
-              <a
-                href={`https://ipfs.infura.io/ipfs/${this.props.values.ipfsHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              ></a>
               <h2>Choose File to Upload</h2>
 
-              <input type="file" onChange={this.props.captureFile} />
+              <input type="file" name = "name" onChange={this.props.captureFile} />
             </div>
           </div>
         </div>
@@ -25,8 +20,22 @@ export class UploadFile extends React.Component {
           <button type="button" className="btn" onClick={this.props.onSubmit}>
             Upload
           </button>
+
+          <button type="button" className="btn" onClick={this.props.showUploadedFiles}>
+            Show Files
+          </button>
         </div>
       </div>
     );
   }
 }
+
+/*<a
+            href={`https://ipfs.infura.io/ipfs/${this.props.values.ipfsHash}`}
+            className="btn btn-primary btn-lg active"
+            role="button"
+            aria-pressed="true"
+          >
+            Show File
+          </a>
+*/
