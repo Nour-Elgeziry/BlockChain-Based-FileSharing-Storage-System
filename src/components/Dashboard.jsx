@@ -63,13 +63,7 @@ export default class Home extends Component {
         return;
       }
 
-      /*2. store file on blockchain
-      this.props.values.contract.methods
-        .set(ipfsHash)
-        .send({ from: this.props.values.account })
-        .then((r) => {
-          this.props.updateState({ ipfsHash });
-        });*/
+    
       // check if sharig or uploading file
       if (isShareFile) {
         //Sharing File
