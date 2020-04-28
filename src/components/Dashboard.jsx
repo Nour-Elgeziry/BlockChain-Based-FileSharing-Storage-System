@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Main.scss";
 import { UploadFile, ShareFile } from "./fileHandling/index";
 
+// initialising connectin to IPFS and declaring Infura as host
 const ipfsClient = require("ipfs-api");
 const ipfs = ipfsClient({
   host: "ipfs.infura.io",
@@ -17,10 +18,11 @@ export default class Home extends Component {
       isShareFile: true,
     };
   }
+  // Calling the function reposible for transition between sharing and uploading
   componentDidMount() {
     this.rightSide.classList.add("right");
   }
-
+  // function to decide what transition to perform
   changeState() {
     const { isShareFile } = this.state;
 
@@ -34,20 +36,19 @@ export default class Home extends Component {
     this.setState((prevState) => ({
       isShareFile: !prevState.isShareFile,
     }));
-    console.log("is share", this.state.isShareFile);
   }
+  // capturing file selected by user
   captureFile = (event) => {
     event.preventDefault();
-
     const file = event.target.files[0];
-
+    // reading file as buffer
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(file);
     reader.onloadend = () => {
       this.setState({ buffer: Buffer(reader.result) });
     };
   };
-
+  // handiling submition of the file
   onSubmit = (event) => {
     const { isShareFile } = this.state;
 
@@ -63,11 +64,9 @@ export default class Home extends Component {
         return;
       }
 
-    
       // check if sharig or uploading file
       if (isShareFile) {
         //Sharing File
-
         console.log("pushing file to slected user's Shared array");
         this.props.values.contract.methods
           .shareFile(this.props.values.sharedUserAddress, ipfsHash)
@@ -85,13 +84,12 @@ export default class Home extends Component {
       }
     });
   };
-
+  // function to store uploade file in the array
   goToShowUploadedFiles() {
     const { history } = this.props;
     const { ipfsUploadedHashArray } = this.props.values;
 
     // Get Uploaded Files
-
     this.props.values.contract.methods
       .getMyFiles(this.props.values.account)
       .call()
@@ -109,7 +107,7 @@ export default class Home extends Component {
       });
     history.push("/ShowUploadedFiles");
   }
-
+  //function to store shared file in the array
   goToShowSharedFiles() {
     const { history } = this.props;
     const { ipfsSharedHashArray } = this.props.values;

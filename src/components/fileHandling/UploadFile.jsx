@@ -30,12 +30,3 @@ export class UploadFile extends React.Component {
   }
 }
 
-/*<a
-            href={`https://ipfs.infura.io/ipfs/${this.props.values.ipfsHash}`}
-            className="btn btn-primary btn-lg active"
-            role="button"
-            aria-pressed="true"
-          >
-            Show File
-          </a>
-*/

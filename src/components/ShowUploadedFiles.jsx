@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export default class ShowUploadedFiles extends Component {
   render() {
     const { ipfsUploadedHashArray } = this.props.values;
-    console.log("Contents of uploaded file array ", ipfsUploadedHashArray);
+    
 
     return (
       <div>

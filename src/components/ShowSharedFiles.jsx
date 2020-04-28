@@ -3,7 +3,6 @@ import React, { Component } from "react";
 export default class ShowSharedFiles extends Component {
   render() {
     const { ipfsSharedHashArray } = this.props.values;
-    console.log(" Array inside the showshared file", ipfsSharedHashArray);
 
     return (
       <div>

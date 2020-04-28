@@ -29,7 +29,7 @@ class App extends React.Component {
       sharedUserAddress: "",
     };
   }
-  async componentDidMount() {
+  async componentWillMount() {
     await this.loadWeb3();
     await this.loadBlockchainData();
   }

@@ -17,9 +17,9 @@ contract SSSDapp {
 
     /*creat object that stores the following:
     
-    1. user name * 
+    1. user name           set when user registers
     2. email            set when user registers
-    3. password *
+    3. password     set when user registers
     4. MyFiles // alterded when 1.user uploads file , stores the file hash(set) 2. user loggs in, returns ipfsHash(get)
     5. SharedFiles // altered whenother users share files , user inputs shared file hashes here.
      */

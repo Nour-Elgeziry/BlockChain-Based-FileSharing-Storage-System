@@ -2,78 +2,17 @@ import React, { Component } from "react";
 import "./Main.scss";
 import { Login, Registeration } from "./auth/index";
 
-import Web3 from "web3";
-import SSSDapp from "../abis/SSSDapp.json";
-
 export default class Home extends Component {
-  /*constructor(props) {
-    super(props);
-    this.state = {
-      account: "",
-      buffer: null,
-      contract: null,
-      ipfsHash: " ",
-      isLogginActive: true,
-      isAccessGranted: false,
-      registerUsername: "",
-      registerEmail: "",
-      registerPassword: "",
-      signinUsername: "",
-      signinPassword: ""
-    };
-  }*/
   constructor(props) {
     super(props);
     this.state = {
-      isLogginActive: true
+      isLogginActive: true,
     };
   }
 
   componentDidMount() {
     this.rightSide.classList.add("right");
   }
-
-  /*async loadBlockchainData() {
-    const web3 = window.web3;
-    // Load account
-    const accounts = await web3.eth.getAccounts(); // get account and return array
-    console.log("list of accounts", accounts);
-    this.setState({ account: accounts[0] });
-    const networkId = await web3.eth.net.getId(); // getting network id
-    console.log(networkId);
-    const networkData = SSSDapp.networks[networkId];
-    if (networkData) {
-      // Fetching contract
-      const contract = web3.eth.Contract(SSSDapp.abi, networkData.address);
-      console.log(contract);
-      this.setState({ contract });
-      const ipfsHash = await contract.methods.get().call();
-      console.log("the hash:", ipfsHash);
-      this.setState({ ipfsHash });
-    } else {
-      window.alert(
-        "Smart contract not deployed on Ganache to detected network."
-      );
-    }
-  }
-
-  // setting web3 to connect to block chain
-  async loadWeb3() {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      await window.ethereum.enable();
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-    } else {
-      window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
-    }
-  }*/
-
-  /*handleChange = ({ target }) => {
-    this.setState({ [target.name]: target.value });
-  };*/
 
   changeState() {
     const { isLogginActive } = this.state;
@@ -85,7 +24,9 @@ export default class Home extends Component {
       this.rightSide.classList.remove("left");
       this.rightSide.classList.add("right");
     }
-    this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
+    this.setState((prevState) => ({
+      isLogginActive: !prevState.isLogginActive,
+    }));
   }
 
   registerUser() {
@@ -116,7 +57,7 @@ export default class Home extends Component {
         this.props.state.signinPassword
       )
       .call()
-      .then(function(x) {
+      .then(function (x) {
         const access = x;
         if (access === "access granted") {
           console.log("access granted");
@@ -136,10 +77,10 @@ export default class Home extends Component {
     return (
       <div className="Home">
         <div className="login">
-          <div className="container" ref={ref => (this.container = ref)}>
+          <div className="container" ref={(ref) => (this.container = ref)}>
             {isLogginActive && (
               <Login
-                containerRef={ref => (this.current = ref)}
+                containerRef={(ref) => (this.current = ref)}
                 values={this.props.state}
                 valuesChange={this.props.handleChange}
                 signinFunction={this.signinUser.bind(this)}
@@ -147,7 +88,7 @@ export default class Home extends Component {
             )}
             {!isLogginActive && (
               <Registeration
-                containerRef={ref => (this.Registeration = ref)}
+                containerRef={(ref) => (this.Registeration = ref)}
                 values={this.props.state}
                 valuesChange={this.props.handleChange}
                 registerFunction={this.registerUser.bind(this)}
@@ -158,7 +99,7 @@ export default class Home extends Component {
           <RightSide
             current={current}
             currentActive={currentActive}
-            containerRef={ref => (this.rightSide = ref)}
+            containerRef={(ref) => (this.rightSide = ref)}
             onClick={this.changeState.bind(this)}
             history={this.props.history}
           />
@@ -168,7 +109,7 @@ export default class Home extends Component {
   }
 }
 
-const RightSide = props => {
+const RightSide = (props) => {
   return (
     <div
       className="right-side"
@@ -181,9 +122,3 @@ const RightSide = props => {
     </div>
   );
 };
-
-/*<div className="container" ref={ref => (this.container = ref)}>
-          {isAccessGranted && (
-            <UploadFile containerRef={ref => (this.current = ref)} />
-          )}
-        </div> */
